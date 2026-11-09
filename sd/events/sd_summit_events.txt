@@ -1,0 +1,118 @@
+namespace = sd_summit
+
+# Court of Nations — yearly embassy / summit beat (no Tours DLC required)
+sd_summit.1001 = {
+	type = character_event
+	title = sd_summit.1001.t
+	desc = sd_summit.1001.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {
+		sd_ensure_diplomat_defaults_effect = yes
+	}
+
+	# Tribute splash — modest gold from intensity
+	option = {
+		name = sd_summit.1001.a
+		custom_tooltip = sd_summit.tt.tribute
+		trigger = {
+			sd_module_tributary_on = yes
+			sd_actor_has_any_bound_client = yes
+		}
+		if = {
+			limit = { sd_intensity_is_low = yes }
+			add_gold = 25
+			add_prestige = 25
+		}
+		else_if = {
+			limit = { sd_intensity_is_mid = yes }
+			add_gold = 75
+			add_prestige = 50
+		}
+		else = {
+			add_gold = 150
+			add_prestige = 100
+		}
+		sd_collect_tributary_gold_effect = yes
+	}
+
+	# Alliance opportunity — mild renown / prestige
+	option = {
+		name = sd_summit.1001.b
+		custom_tooltip = sd_summit.tt.opportunity
+		if = {
+			limit = { sd_intensity_is_low = yes }
+			add_prestige = 50
+			dynasty = { add_dynasty_prestige = 25 }
+		}
+		else_if = {
+			limit = { sd_intensity_is_mid = yes }
+			add_prestige = 100
+			dynasty = { add_dynasty_prestige = 50 }
+		}
+		else = {
+			add_prestige = 200
+			dynasty = { add_dynasty_prestige = 100 }
+		}
+	}
+
+	# Guest hospitality — charm a random bound client if any
+	option = {
+		name = sd_summit.1001.c
+		custom_tooltip = sd_summit.tt.guest
+		trigger = {
+			sd_actor_has_any_bound_client = yes
+		}
+		random_in_list = {
+			variable = sd_bound_vassals
+			limit = { is_alive = yes }
+			weight = { base = 1 }
+			save_scope_as = sd_guest
+		}
+		if = {
+			limit = { NOT = { exists = scope:sd_guest } }
+			random_in_list = {
+				variable = sd_bound_tributaries
+				limit = { is_alive = yes }
+				weight = { base = 1 }
+				save_scope_as = sd_guest
+			}
+		}
+		if = {
+			limit = { NOT = { exists = scope:sd_guest } }
+			random_in_list = {
+				variable = sd_bound_allies
+				limit = { is_alive = yes }
+				weight = { base = 1 }
+				save_scope_as = sd_guest
+			}
+		}
+		if = {
+			limit = { exists = scope:sd_guest }
+			scope:sd_guest = {
+				add_opinion = {
+					target = root
+					modifier = sd_summit_guest_opinion
+				}
+				add_character_modifier = {
+					modifier = sd_charmed_court_modifier
+					days = 180
+				}
+			}
+			add_prestige = 75
+		}
+		else = {
+			add_prestige = 25
+		}
+	}
+
+	option = {
+		name = sd_summit.1001.d
+		custom_tooltip = sd_summit.tt.dismiss
+		add_prestige = 10
+	}
+}

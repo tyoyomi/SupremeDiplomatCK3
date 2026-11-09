@@ -1,0 +1,34 @@
+sd_offered_vassalage_opinion = {
+	opinion = 30
+	yearly_decay = 1
+}
+
+sd_tributary_bond_opinion = {
+	opinion = 20
+	yearly_decay = 1
+}
+
+sd_sealed_alliance_opinion = {
+	opinion = 25
+	yearly_decay = 1
+}
+
+sd_marriage_pact_opinion = {
+	opinion = 40
+	yearly_decay = 1
+}
+
+sd_charmed_by_diplomat_opinion = {
+	opinion = 50
+	yearly_decay = 2
+}
+
+sd_realm_invite_opinion = {
+	opinion = 35
+	yearly_decay = 1
+}
+
+sd_summit_guest_opinion = {
+	opinion = 15
+	yearly_decay = 2
+}

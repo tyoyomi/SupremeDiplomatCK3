@@ -1,0 +1,127 @@
+# Supreme Diplomat — intensity-aware costs / caps
+
+@sd_vassalize_gold_low = 150
+@sd_vassalize_gold_mid = 75
+@sd_vassalize_gold_high = 25
+@sd_vassalize_prestige_low = 250
+@sd_vassalize_prestige_mid = 100
+@sd_vassalize_prestige_high = 25
+
+@sd_tributary_gold_low = 50
+@sd_tributary_gold_mid = 100
+@sd_tributary_gold_high = 200
+
+@sd_realm_invite_gold_low = 400
+@sd_realm_invite_gold_mid = 250
+@sd_realm_invite_gold_high = 100
+@sd_realm_invite_prestige_low = 500
+@sd_realm_invite_prestige_mid = 300
+@sd_realm_invite_prestige_high = 100
+
+@sd_realm_invite_max_counties_low = 6
+@sd_realm_invite_max_counties_mid = 12
+@sd_realm_invite_max_counties_high = 20
+
+@sd_house_seal_cap_low = 2
+@sd_house_seal_cap_mid = 3
+@sd_house_seal_cap_high = 5
+
+@sd_sway_days_low = 365
+@sd_sway_days_mid = 730
+@sd_sway_days_high = 1095
+
+sd_vassalize_gold_cost_value = {
+	value = @sd_vassalize_gold_high
+	if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 1 }
+		set = @sd_vassalize_gold_low
+	}
+	else_if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 2 }
+		set = @sd_vassalize_gold_mid
+	}
+}
+
+sd_vassalize_prestige_cost_value = {
+	value = @sd_vassalize_prestige_high
+	if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 1 }
+		set = @sd_vassalize_prestige_low
+	}
+	else_if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 2 }
+		set = @sd_vassalize_prestige_mid
+	}
+}
+
+sd_tributary_yearly_gold_value = {
+	value = @sd_tributary_gold_high
+	if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 1 }
+		set = @sd_tributary_gold_low
+	}
+	else_if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 2 }
+		set = @sd_tributary_gold_mid
+	}
+}
+
+sd_realm_invite_gold_cost_value = {
+	value = @sd_realm_invite_gold_high
+	if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 1 }
+		set = @sd_realm_invite_gold_low
+	}
+	else_if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 2 }
+		set = @sd_realm_invite_gold_mid
+	}
+}
+
+sd_realm_invite_prestige_cost_value = {
+	value = @sd_realm_invite_prestige_high
+	if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 1 }
+		set = @sd_realm_invite_prestige_low
+	}
+	else_if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 2 }
+		set = @sd_realm_invite_prestige_mid
+	}
+}
+
+sd_realm_invite_max_counties_value = {
+	value = @sd_realm_invite_max_counties_high
+	if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 1 }
+		set = @sd_realm_invite_max_counties_low
+	}
+	else_if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 2 }
+		set = @sd_realm_invite_max_counties_mid
+	}
+}
+
+sd_house_seal_cap_value = {
+	value = @sd_house_seal_cap_high
+	if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 1 }
+		set = @sd_house_seal_cap_low
+	}
+	else_if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 2 }
+		set = @sd_house_seal_cap_mid
+	}
+}
+
+sd_sway_duration_days_value = {
+	value = @sd_sway_days_high
+	if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 1 }
+		set = @sd_sway_days_low
+	}
+	else_if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 2 }
+		set = @sd_sway_days_mid
+	}
+}

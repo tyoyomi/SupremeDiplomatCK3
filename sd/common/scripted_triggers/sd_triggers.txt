@@ -1,0 +1,334 @@
+# Supreme Diplomat — scripted triggers
+
+sd_is_supreme_diplomat = {
+	has_trait = sd_supreme_diplomat
+}
+
+sd_granting_disabled = {
+	has_game_rule = sd_rule_granting_disabled
+}
+
+sd_can_embrace_diplomat = {
+	is_alive = yes
+	is_adult = yes
+	NOT = { has_game_rule = sd_rule_granting_disabled }
+	NOT = { has_trait = sd_supreme_diplomat }
+	trigger_if = {
+		limit = { has_game_rule = sd_rule_granting_player_self }
+		is_ai = no
+	}
+	trigger_else_if = {
+		limit = { has_game_rule = sd_rule_granting_player_and_targets }
+		OR = {
+			is_ai = no
+			has_game_rule = sd_rule_ai_follow_intensity
+		}
+	}
+	trigger_else = {
+		always = no
+	}
+}
+
+sd_actor_may_bestow_by_rule = {
+	NOT = { has_game_rule = sd_rule_granting_disabled }
+	has_game_rule = sd_rule_granting_player_and_targets
+	trigger_if = {
+		limit = { is_ai = yes }
+		has_game_rule = sd_rule_ai_follow_intensity
+	}
+}
+
+sd_ai_may_use_diplomat = {
+	OR = {
+		is_ai = no
+		has_game_rule = sd_rule_ai_follow_intensity
+	}
+}
+
+sd_intensity_is_low = {
+	exists = var:sd_cfg_intensity
+	var:sd_cfg_intensity = 1
+}
+
+sd_intensity_is_mid = {
+	exists = var:sd_cfg_intensity
+	var:sd_cfg_intensity = 2
+}
+
+sd_intensity_is_high = {
+	OR = {
+		NOT = { exists = var:sd_cfg_intensity }
+		var:sd_cfg_intensity = 3
+	}
+}
+
+sd_module_vassalage_on = {
+	OR = {
+		AND = {
+			exists = var:sd_cfg_module_vassalage
+			var:sd_cfg_module_vassalage = 1
+		}
+		AND = {
+			NOT = { exists = var:sd_cfg_module_vassalage }
+			has_game_rule = sd_rule_module_vassalage_on
+		}
+	}
+	NOT = {
+		AND = {
+			exists = var:sd_cfg_module_vassalage
+			var:sd_cfg_module_vassalage = 0
+		}
+	}
+}
+
+sd_module_tributary_on = {
+	OR = {
+		AND = {
+			exists = var:sd_cfg_module_tributary
+			var:sd_cfg_module_tributary = 1
+		}
+		AND = {
+			NOT = { exists = var:sd_cfg_module_tributary }
+			has_game_rule = sd_rule_module_tributary_on
+		}
+	}
+	NOT = {
+		AND = {
+			exists = var:sd_cfg_module_tributary
+			var:sd_cfg_module_tributary = 0
+		}
+	}
+}
+
+sd_module_alliance_on = {
+	OR = {
+		AND = {
+			exists = var:sd_cfg_module_alliance
+			var:sd_cfg_module_alliance = 1
+		}
+		AND = {
+			NOT = { exists = var:sd_cfg_module_alliance }
+			has_game_rule = sd_rule_module_alliance_on
+		}
+	}
+	NOT = {
+		AND = {
+			exists = var:sd_cfg_module_alliance
+			var:sd_cfg_module_alliance = 0
+		}
+	}
+}
+
+sd_module_marriage_on = {
+	OR = {
+		AND = {
+			exists = var:sd_cfg_module_marriage
+			var:sd_cfg_module_marriage = 1
+		}
+		AND = {
+			NOT = { exists = var:sd_cfg_module_marriage }
+			has_game_rule = sd_rule_module_marriage_on
+		}
+	}
+	NOT = {
+		AND = {
+			exists = var:sd_cfg_module_marriage
+			var:sd_cfg_module_marriage = 0
+		}
+	}
+}
+
+sd_module_sway_on = {
+	OR = {
+		AND = {
+			exists = var:sd_cfg_module_sway
+			var:sd_cfg_module_sway = 1
+		}
+		AND = {
+			NOT = { exists = var:sd_cfg_module_sway }
+			has_game_rule = sd_rule_module_sway_on
+		}
+	}
+	NOT = {
+		AND = {
+			exists = var:sd_cfg_module_sway
+			var:sd_cfg_module_sway = 0
+		}
+	}
+}
+
+sd_module_realm_invite_on = {
+	OR = {
+		AND = {
+			exists = var:sd_cfg_module_realm_invite
+			var:sd_cfg_module_realm_invite = 1
+		}
+		AND = {
+			NOT = { exists = var:sd_cfg_module_realm_invite }
+			has_game_rule = sd_rule_module_realm_invite_on
+		}
+	}
+	NOT = {
+		AND = {
+			exists = var:sd_cfg_module_realm_invite
+			var:sd_cfg_module_realm_invite = 0
+		}
+	}
+}
+
+sd_module_summit_on = {
+	OR = {
+		AND = {
+			exists = var:sd_cfg_module_summit
+			var:sd_cfg_module_summit = 1
+		}
+		AND = {
+			NOT = { exists = var:sd_cfg_module_summit }
+			has_game_rule = sd_rule_module_summit_on
+		}
+	}
+	NOT = {
+		AND = {
+			exists = var:sd_cfg_module_summit
+			var:sd_cfg_module_summit = 0
+		}
+	}
+}
+
+sd_is_independent_valid_target = {
+	is_alive = yes
+	is_landed = yes
+	is_independent_ruler = yes
+	is_adult = yes
+	NOT = { this = scope:actor }
+	NOT = { is_vassal_of = scope:actor }
+}
+
+sd_is_bound_tributary = {
+	exists = var:sd_tributary_overlord
+	var:sd_tributary_overlord = {
+		is_alive = yes
+	}
+}
+
+# this = potential overlord actor context uses scope:actor / scope:recipient
+sd_can_offer_vassalage = {
+	scope:actor = {
+		sd_is_supreme_diplomat = yes
+		sd_module_vassalage_on = yes
+		sd_ai_may_use_diplomat = yes
+		is_landed = yes
+		is_independent_ruler = yes
+		NOT = { has_character_flag = sd_vassalage_cd }
+	}
+	scope:recipient = {
+		sd_is_independent_valid_target = yes
+	}
+	# Rank: prefer > at Low; ≥ at Mid/High
+	trigger_if = {
+		limit = { scope:actor = { sd_intensity_is_low = yes } }
+		scope:actor.primary_title.tier > scope:recipient.primary_title.tier
+	}
+	trigger_else = {
+		scope:actor.primary_title.tier >= scope:recipient.primary_title.tier
+	}
+}
+
+sd_can_demand_tributary = {
+	scope:actor = {
+		sd_is_supreme_diplomat = yes
+		sd_module_tributary_on = yes
+		sd_ai_may_use_diplomat = yes
+		is_landed = yes
+		NOT = { has_character_flag = sd_tributary_cd }
+	}
+	scope:recipient = {
+		sd_is_independent_valid_target = yes
+		NOT = { exists = var:sd_tributary_overlord }
+	}
+}
+
+sd_can_seal_alliance = {
+	scope:actor = {
+		sd_is_supreme_diplomat = yes
+		sd_module_alliance_on = yes
+		sd_ai_may_use_diplomat = yes
+		is_landed = yes
+		NOT = { has_character_flag = sd_alliance_cd }
+	}
+	scope:recipient = {
+		sd_is_independent_valid_target = yes
+		NOT = { is_allied_to = scope:actor }
+	}
+}
+
+sd_can_seal_house_alliances = {
+	scope:actor = {
+		sd_is_supreme_diplomat = yes
+		sd_module_alliance_on = yes
+		sd_ai_may_use_diplomat = yes
+		is_landed = yes
+		is_house_head = yes
+		NOT = { has_character_flag = sd_house_alliance_cd }
+	}
+}
+
+sd_can_marriage_pact = {
+	scope:actor = {
+		sd_is_supreme_diplomat = yes
+		sd_module_marriage_on = yes
+		sd_ai_may_use_diplomat = yes
+		is_landed = yes
+		NOT = { has_character_flag = sd_marriage_pact_cd }
+	}
+	scope:recipient = {
+		sd_is_independent_valid_target = yes
+	}
+}
+
+sd_can_supreme_sway = {
+	scope:actor = {
+		sd_is_supreme_diplomat = yes
+		sd_module_sway_on = yes
+		sd_ai_may_use_diplomat = yes
+		NOT = { has_character_flag = sd_sway_cd }
+	}
+	scope:recipient = {
+		is_alive = yes
+		is_adult = yes
+		NOT = { this = scope:actor }
+	}
+}
+
+sd_can_invite_realm = {
+	scope:actor = {
+		sd_is_supreme_diplomat = yes
+		sd_module_realm_invite_on = yes
+		sd_ai_may_use_diplomat = yes
+		is_landed = yes
+		is_independent_ruler = yes
+		NOT = { sd_intensity_is_low = yes }
+		NOT = { has_character_flag = sd_realm_invite_cd }
+	}
+	scope:recipient = {
+		sd_is_independent_valid_target = yes
+	}
+	scope:actor.primary_title.tier > scope:recipient.primary_title.tier
+	# Small realm gate by intensity (sub_realm_size = counties under them)
+	trigger_if = {
+		limit = { scope:actor = { sd_intensity_is_mid = yes } }
+		scope:recipient = { sub_realm_size <= 12 }
+	}
+	trigger_else = {
+		scope:recipient = { sub_realm_size <= 20 }
+	}
+}
+
+sd_ssc_present_trigger = {
+	sd_ssc_loaded_trigger = yes
+}
+
+sd_actor_has_any_bound_client = {
+	exists = var:sd_bound_client_count
+	var:sd_bound_client_count >= 1
+}

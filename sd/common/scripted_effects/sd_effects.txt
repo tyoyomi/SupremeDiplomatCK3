@@ -1,0 +1,964 @@
+# Supreme Diplomat — scripted effects
+# Heavy logic lives here; interactions / decisions / events stay thin.
+
+### Defaults / refresh / cycle
+sd_ensure_diplomat_defaults_effect = {
+	if = {
+		limit = { NOT = { exists = var:sd_cfg_intensity } }
+		if = {
+			limit = { has_game_rule = sd_rule_intensity_default_low }
+			set_variable = { name = sd_cfg_intensity value = 1 }
+		}
+		else_if = {
+			limit = { has_game_rule = sd_rule_intensity_default_mid }
+			set_variable = { name = sd_cfg_intensity value = 2 }
+		}
+		else = {
+			set_variable = { name = sd_cfg_intensity value = 3 }
+		}
+	}
+	if = {
+		limit = { NOT = { exists = var:sd_cfg_module_vassalage } }
+		if = {
+			limit = { has_game_rule = sd_rule_module_vassalage_off }
+			set_variable = { name = sd_cfg_module_vassalage value = 0 }
+		}
+		else = { set_variable = { name = sd_cfg_module_vassalage value = 1 } }
+	}
+	if = {
+		limit = { NOT = { exists = var:sd_cfg_module_tributary } }
+		if = {
+			limit = { has_game_rule = sd_rule_module_tributary_off }
+			set_variable = { name = sd_cfg_module_tributary value = 0 }
+		}
+		else = { set_variable = { name = sd_cfg_module_tributary value = 1 } }
+	}
+	if = {
+		limit = { NOT = { exists = var:sd_cfg_module_alliance } }
+		if = {
+			limit = { has_game_rule = sd_rule_module_alliance_off }
+			set_variable = { name = sd_cfg_module_alliance value = 0 }
+		}
+		else = { set_variable = { name = sd_cfg_module_alliance value = 1 } }
+	}
+	if = {
+		limit = { NOT = { exists = var:sd_cfg_module_marriage } }
+		if = {
+			limit = { has_game_rule = sd_rule_module_marriage_off }
+			set_variable = { name = sd_cfg_module_marriage value = 0 }
+		}
+		else = { set_variable = { name = sd_cfg_module_marriage value = 1 } }
+	}
+	if = {
+		limit = { NOT = { exists = var:sd_cfg_module_sway } }
+		if = {
+			limit = { has_game_rule = sd_rule_module_sway_off }
+			set_variable = { name = sd_cfg_module_sway value = 0 }
+		}
+		else = { set_variable = { name = sd_cfg_module_sway value = 1 } }
+	}
+	if = {
+		limit = { NOT = { exists = var:sd_cfg_module_realm_invite } }
+		if = {
+			limit = { has_game_rule = sd_rule_module_realm_invite_off }
+			set_variable = { name = sd_cfg_module_realm_invite value = 0 }
+		}
+		else = { set_variable = { name = sd_cfg_module_realm_invite value = 1 } }
+	}
+	if = {
+		limit = { NOT = { exists = var:sd_cfg_module_summit } }
+		if = {
+			limit = { has_game_rule = sd_rule_module_summit_off }
+			set_variable = { name = sd_cfg_module_summit value = 0 }
+		}
+		else = { set_variable = { name = sd_cfg_module_summit value = 1 } }
+	}
+	if = {
+		limit = { NOT = { exists = var:sd_bound_client_count } }
+		set_variable = { name = sd_bound_client_count value = 0 }
+	}
+}
+
+sd_clear_diplomat_modifiers_effect = {
+	remove_character_modifier = sd_diplo_low_modifier
+	remove_character_modifier = sd_diplo_med_modifier
+	remove_character_modifier = sd_diplo_high_modifier
+	remove_character_modifier = sd_federation_prestige_faucet_modifier
+}
+
+sd_refresh_federation_faucet_effect = {
+	remove_character_modifier = sd_federation_prestige_faucet_modifier
+	if = {
+		limit = {
+			has_trait = sd_supreme_diplomat
+			exists = var:sd_bound_client_count
+			var:sd_bound_client_count >= 1
+			NOT = { sd_intensity_is_low = yes }
+		}
+		add_character_modifier = {
+			modifier = sd_federation_prestige_faucet_modifier
+			days = -1
+		}
+	}
+}
+
+sd_refresh_diplomat_modifiers_effect = {
+	sd_clear_diplomat_modifiers_effect = yes
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = { has_trait = sd_supreme_diplomat }
+		if = {
+			limit = { var:sd_cfg_intensity = 1 }
+			add_character_modifier = {
+				modifier = sd_diplo_low_modifier
+				days = -1
+			}
+		}
+		else_if = {
+			limit = { var:sd_cfg_intensity = 2 }
+			add_character_modifier = {
+				modifier = sd_diplo_med_modifier
+				days = -1
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = sd_diplo_high_modifier
+				days = -1
+			}
+		}
+		sd_refresh_federation_faucet_effect = yes
+	}
+}
+
+sd_cycle_intensity_cfg_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = { var:sd_cfg_intensity = 1 }
+		set_variable = { name = sd_cfg_intensity value = 2 }
+	}
+	else_if = {
+		limit = { var:sd_cfg_intensity = 2 }
+		set_variable = { name = sd_cfg_intensity value = 3 }
+	}
+	else = {
+		set_variable = { name = sd_cfg_intensity value = 1 }
+	}
+	sd_refresh_diplomat_modifiers_effect = yes
+}
+
+sd_cycle_module_vassalage_cfg_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = { var:sd_cfg_module_vassalage = 1 }
+		set_variable = { name = sd_cfg_module_vassalage value = 0 }
+	}
+	else = { set_variable = { name = sd_cfg_module_vassalage value = 1 } }
+}
+
+sd_cycle_module_tributary_cfg_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = { var:sd_cfg_module_tributary = 1 }
+		set_variable = { name = sd_cfg_module_tributary value = 0 }
+	}
+	else = { set_variable = { name = sd_cfg_module_tributary value = 1 } }
+}
+
+sd_cycle_module_alliance_cfg_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = { var:sd_cfg_module_alliance = 1 }
+		set_variable = { name = sd_cfg_module_alliance value = 0 }
+	}
+	else = { set_variable = { name = sd_cfg_module_alliance value = 1 } }
+}
+
+sd_cycle_module_marriage_cfg_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = { var:sd_cfg_module_marriage = 1 }
+		set_variable = { name = sd_cfg_module_marriage value = 0 }
+	}
+	else = { set_variable = { name = sd_cfg_module_marriage value = 1 } }
+}
+
+sd_cycle_module_sway_cfg_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = { var:sd_cfg_module_sway = 1 }
+		set_variable = { name = sd_cfg_module_sway value = 0 }
+	}
+	else = { set_variable = { name = sd_cfg_module_sway value = 1 } }
+}
+
+sd_cycle_module_realm_invite_cfg_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = { var:sd_cfg_module_realm_invite = 1 }
+		set_variable = { name = sd_cfg_module_realm_invite value = 0 }
+	}
+	else = { set_variable = { name = sd_cfg_module_realm_invite value = 1 } }
+}
+
+sd_cycle_module_summit_cfg_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = { var:sd_cfg_module_summit = 1 }
+		set_variable = { name = sd_cfg_module_summit value = 0 }
+	}
+	else = { set_variable = { name = sd_cfg_module_summit value = 1 } }
+}
+
+### Bound-list helpers (O(bound) only)
+sd_increment_bound_count_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	change_variable = { name = sd_bound_client_count add = 1 }
+	sd_refresh_federation_faucet_effect = yes
+}
+
+sd_decrement_bound_count_effect = {
+	sd_ensure_diplomat_defaults_effect = yes
+	if = {
+		limit = {
+			exists = var:sd_bound_client_count
+			var:sd_bound_client_count > 0
+		}
+		change_variable = { name = sd_bound_client_count subtract = 1 }
+	}
+	sd_refresh_federation_faucet_effect = yes
+}
+
+sd_bind_vassal_client_effect = {
+	# this = overlord; scope:recipient = new vassal
+	if = {
+		limit = {
+			NOT = {
+				is_target_in_variable_list = {
+					name = sd_bound_vassals
+					target = scope:recipient
+				}
+			}
+		}
+		add_to_variable_list = {
+			name = sd_bound_vassals
+			target = scope:recipient
+		}
+		sd_increment_bound_count_effect = yes
+	}
+}
+
+sd_bind_tributary_client_effect = {
+	# this = overlord; scope:recipient = tributary
+	if = {
+		limit = {
+			NOT = {
+				is_target_in_variable_list = {
+					name = sd_bound_tributaries
+					target = scope:recipient
+				}
+			}
+		}
+		add_to_variable_list = {
+			name = sd_bound_tributaries
+			target = scope:recipient
+		}
+		sd_increment_bound_count_effect = yes
+	}
+}
+
+sd_bind_ally_client_effect = {
+	# this = actor; scope:recipient = ally
+	if = {
+		limit = {
+			NOT = {
+				is_target_in_variable_list = {
+					name = sd_bound_allies
+					target = scope:recipient
+				}
+			}
+		}
+		add_to_variable_list = {
+			name = sd_bound_allies
+			target = scope:recipient
+		}
+		sd_increment_bound_count_effect = yes
+	}
+}
+
+### Cooldown helpers
+sd_apply_vassalage_cd_effect = {
+	if = {
+		limit = { sd_intensity_is_low = yes }
+		add_character_flag = { flag = sd_vassalage_cd years = 1 }
+	}
+	else_if = {
+		limit = { sd_intensity_is_mid = yes }
+		add_character_flag = { flag = sd_vassalage_cd days = 180 }
+	}
+	else = {
+		add_character_flag = { flag = sd_vassalage_cd days = 60 }
+	}
+}
+
+sd_apply_tributary_cd_effect = {
+	if = {
+		limit = { sd_intensity_is_low = yes }
+		add_character_flag = { flag = sd_tributary_cd years = 1 }
+	}
+	else_if = {
+		limit = { sd_intensity_is_mid = yes }
+		add_character_flag = { flag = sd_tributary_cd days = 180 }
+	}
+	else = {
+		add_character_flag = { flag = sd_tributary_cd days = 45 }
+	}
+}
+
+sd_apply_alliance_cd_effect = {
+	if = {
+		limit = { sd_intensity_is_low = yes }
+		add_character_flag = { flag = sd_alliance_cd years = 1 }
+	}
+	else_if = {
+		limit = { sd_intensity_is_mid = yes }
+		add_character_flag = { flag = sd_alliance_cd days = 180 }
+	}
+	else = {
+		add_character_flag = { flag = sd_alliance_cd days = 30 }
+	}
+}
+
+sd_apply_house_alliance_cd_effect = {
+	if = {
+		limit = { sd_intensity_is_low = yes }
+		add_character_flag = { flag = sd_house_alliance_cd years = 1 }
+	}
+	else_if = {
+		limit = { sd_intensity_is_mid = yes }
+		add_character_flag = { flag = sd_house_alliance_cd days = 180 }
+	}
+	else = {
+		add_character_flag = { flag = sd_house_alliance_cd days = 90 }
+	}
+}
+
+sd_apply_marriage_pact_cd_effect = {
+	if = {
+		limit = { sd_intensity_is_low = yes }
+		add_character_flag = { flag = sd_marriage_pact_cd years = 1 }
+	}
+	else_if = {
+		limit = { sd_intensity_is_mid = yes }
+		add_character_flag = { flag = sd_marriage_pact_cd days = 180 }
+	}
+	else = {
+		add_character_flag = { flag = sd_marriage_pact_cd days = 60 }
+	}
+}
+
+sd_apply_sway_cd_effect = {
+	if = {
+		limit = { sd_intensity_is_low = yes }
+		add_character_flag = { flag = sd_sway_cd days = 180 }
+	}
+	else_if = {
+		limit = { sd_intensity_is_mid = yes }
+		add_character_flag = { flag = sd_sway_cd days = 90 }
+	}
+	else = {
+		add_character_flag = { flag = sd_sway_cd days = 30 }
+	}
+}
+
+sd_apply_realm_invite_cd_effect = {
+	if = {
+		limit = { sd_intensity_is_mid = yes }
+		add_character_flag = { flag = sd_realm_invite_cd days = 180 }
+	}
+	else = {
+		add_character_flag = { flag = sd_realm_invite_cd days = 90 }
+	}
+}
+
+### Grant / revoke
+sd_embrace_supreme_diplomat_silent_effect = {
+	add_trait = sd_supreme_diplomat
+	sd_ensure_diplomat_defaults_effect = yes
+	sd_refresh_diplomat_modifiers_effect = yes
+}
+
+sd_embrace_supreme_diplomat_effect = {
+	sd_embrace_supreme_diplomat_silent_effect = yes
+	save_scope_as = sd_diplomat
+	trigger_event = sd_events.1001
+}
+
+sd_renounce_supreme_diplomat_silent_effect = {
+	sd_clear_diplomat_modifiers_effect = yes
+	if = {
+		limit = { has_trait = sd_supreme_diplomat }
+		remove_trait = sd_supreme_diplomat
+	}
+}
+
+sd_renounce_supreme_diplomat_effect = {
+	sd_renounce_supreme_diplomat_silent_effect = yes
+	save_scope_as = sd_diplomat
+	trigger_event = sd_events.1002
+}
+
+### 1 — Offer Vassalage
+sd_offer_vassalage_effect = {
+	# expects scope:actor / scope:recipient
+	# Gold/prestige charged via interaction cost = {}
+	create_title_and_vassal_change = {
+		type = swear_fealty
+		save_scope_as = sd_vassal_change
+		add_claim_on_loss = no
+	}
+	scope:recipient = {
+		change_liege = {
+			liege = scope:actor
+			change = scope:sd_vassal_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:sd_vassal_change
+	scope:recipient = {
+		add_opinion = {
+			target = scope:actor
+			modifier = sd_offered_vassalage_opinion
+		}
+	}
+	scope:actor = {
+		sd_bind_vassal_client_effect = yes
+		sd_apply_vassalage_cd_effect = yes
+		trigger_event = sd_events.2001
+	}
+}
+
+### 2 — Tributary
+sd_apply_tributary_effect = {
+	# expects scope:actor / scope:recipient
+	scope:recipient = {
+		set_variable = {
+			name = sd_tributary_overlord
+			value = scope:actor
+		}
+		add_character_modifier = {
+			modifier = sd_tributary_client_modifier
+			days = -1
+		}
+		add_opinion = {
+			target = scope:actor
+			modifier = sd_tributary_bond_opinion
+		}
+	}
+	scope:actor = {
+		add_character_modifier = {
+			modifier = sd_tributary_overlord_modifier
+			days = -1
+		}
+		sd_bind_tributary_client_effect = yes
+		sd_apply_tributary_cd_effect = yes
+		trigger_event = sd_events.2101
+	}
+}
+
+sd_clear_tributary_effect = {
+	# this = tributary; optional scope:sd_overlord
+	if = {
+		limit = { exists = var:sd_tributary_overlord }
+		var:sd_tributary_overlord = { save_scope_as = sd_overlord }
+	}
+	remove_character_modifier = sd_tributary_client_modifier
+	if = {
+		limit = { exists = var:sd_tributary_overlord }
+		remove_variable = sd_tributary_overlord
+	}
+	if = {
+		limit = { exists = scope:sd_overlord }
+		scope:sd_overlord = {
+			if = {
+				limit = {
+					is_target_in_variable_list = {
+						name = sd_bound_tributaries
+						target = prev
+					}
+				}
+				remove_list_variable = {
+					name = sd_bound_tributaries
+					target = prev
+				}
+				sd_decrement_bound_count_effect = yes
+			}
+			# Drop overlord modifier if no tributaries remain
+			if = {
+				limit = {
+					NOT = {
+						any_in_list = {
+							variable = sd_bound_tributaries
+							always = yes
+						}
+					}
+				}
+				remove_character_modifier = sd_tributary_overlord_modifier
+			}
+		}
+	}
+}
+
+sd_collect_tributary_gold_effect = {
+	# this = overlord with trait — O(bound) only
+	every_in_list = {
+		variable = sd_bound_tributaries
+		limit = {
+			is_alive = yes
+			exists = var:sd_tributary_overlord
+			var:sd_tributary_overlord = prev
+		}
+		if = {
+			limit = {
+				gold >= sd_tributary_yearly_gold_value
+			}
+			remove_short_term_gold = sd_tributary_yearly_gold_value
+			prev = {
+				add_gold = sd_tributary_yearly_gold_value
+			}
+		}
+		else_if = {
+			limit = { gold > 0 }
+			save_temporary_scope_value_as = {
+				name = sd_partial_tribute
+				value = gold
+			}
+			remove_short_term_gold = scope:sd_partial_tribute
+			prev = {
+				add_gold = scope:sd_partial_tribute
+			}
+		}
+	}
+}
+
+sd_tributary_yearly_pulse = {
+	# on_action effect root = playable
+	if = {
+		limit = {
+			sd_is_supreme_diplomat = yes
+			sd_module_tributary_on = yes
+		}
+		sd_collect_tributary_gold_effect = yes
+	}
+}
+
+### 3 — Alliance seal
+sd_seal_alliance_effect = {
+	# expects scope:actor / scope:recipient
+	if = {
+		limit = { scope:actor = { sd_intensity_is_low = yes } }
+		scope:actor = {
+			add_character_modifier = {
+				modifier = sd_defensive_pact_modifier
+				years = 10
+			}
+		}
+		scope:recipient = {
+			add_character_modifier = {
+				modifier = sd_defensive_pact_modifier
+				years = 10
+			}
+			add_opinion = {
+				target = scope:actor
+				modifier = sd_sealed_alliance_opinion
+			}
+		}
+	}
+	else = {
+		scope:actor = {
+			create_alliance = {
+				target = scope:recipient
+				allied_through_owner = scope:actor
+				allied_through_target = scope:recipient
+			}
+		}
+		scope:recipient = {
+			add_opinion = {
+				target = scope:actor
+				modifier = sd_sealed_alliance_opinion
+			}
+		}
+	}
+	scope:actor = {
+		sd_bind_ally_client_effect = yes
+		sd_apply_alliance_cd_effect = yes
+		trigger_event = sd_events.2201
+	}
+}
+
+sd_seal_one_house_peer_effect = {
+	# this = actor; scope:recipient = peer already set
+	if = {
+		limit = {
+			NOT = { is_allied_to = scope:recipient }
+			scope:recipient = {
+				is_alive = yes
+				is_landed = yes
+				is_independent_ruler = yes
+			}
+		}
+		if = {
+			limit = { sd_intensity_is_low = yes }
+			add_character_modifier = {
+				modifier = sd_defensive_pact_modifier
+				years = 10
+			}
+			scope:recipient = {
+				add_character_modifier = {
+					modifier = sd_defensive_pact_modifier
+					years = 10
+				}
+				add_opinion = {
+					target = prev
+					modifier = sd_sealed_alliance_opinion
+				}
+			}
+		}
+		else = {
+			create_alliance = {
+				target = scope:recipient
+				allied_through_owner = this
+				allied_through_target = scope:recipient
+			}
+			scope:recipient = {
+				add_opinion = {
+					target = prev
+					modifier = sd_sealed_alliance_opinion
+				}
+			}
+		}
+		sd_bind_ally_client_effect = yes
+		change_variable = { name = sd_house_seal_count add = 1 }
+	}
+}
+
+sd_seal_house_alliances_effect = {
+	# scope:actor = dynasty/house head diplomat
+	# Prefer O(dynasty) then O(neighbors) — never yearly world-scan
+	scope:actor = {
+		set_variable = { name = sd_house_seal_count value = 0 }
+		if = {
+			limit = { exists = dynasty }
+			dynasty = {
+				every_dynasty_member = {
+					limit = {
+						is_alive = yes
+						is_landed = yes
+						is_independent_ruler = yes
+						is_adult = yes
+						NOT = { this = scope:actor }
+						NOT = { is_allied_to = scope:actor }
+						scope:actor = {
+							var:sd_house_seal_count < sd_house_seal_cap_value
+						}
+					}
+					save_scope_as = recipient
+					scope:actor = {
+						sd_seal_one_house_peer_effect = yes
+					}
+				}
+			}
+		}
+		every_neighboring_top_liege = {
+			limit = {
+				is_alive = yes
+				is_landed = yes
+				is_independent_ruler = yes
+				is_adult = yes
+				is_house_head = yes
+				NOT = { this = scope:actor }
+				NOT = { is_allied_to = scope:actor }
+				scope:actor = {
+					var:sd_house_seal_count < sd_house_seal_cap_value
+				}
+			}
+			save_scope_as = recipient
+			scope:actor = {
+				sd_seal_one_house_peer_effect = yes
+			}
+		}
+		sd_apply_house_alliance_cd_effect = yes
+		trigger_event = sd_events.2202
+	}
+}
+
+### 4 — Marriage Pact
+sd_marriage_pact_effect = {
+	# expects scope:actor / scope:recipient
+	# Prefer direct ruler marriage; else auto-pick close kin; always seal alliance + pact
+	if = {
+		limit = {
+			scope:actor = {
+				is_married = no
+				can_marry_character = scope:recipient
+			}
+			scope:recipient = {
+				is_married = no
+				can_marry_character = scope:actor
+			}
+		}
+		scope:actor = {
+			marry = scope:recipient
+		}
+	}
+	else = {
+		scope:actor = {
+			random_close_family_member = {
+				limit = {
+					is_alive = yes
+					is_adult = yes
+					is_married = no
+					can_marry_character = scope:recipient
+					scope:recipient = { can_marry_character = prev }
+				}
+				save_scope_as = sd_pact_spouse
+			}
+		}
+		if = {
+			limit = { exists = scope:sd_pact_spouse }
+			scope:sd_pact_spouse = {
+				marry = scope:recipient
+			}
+		}
+		else = {
+			scope:recipient = {
+				random_close_family_member = {
+					limit = {
+						is_alive = yes
+						is_adult = yes
+						is_married = no
+						can_marry_character = scope:actor
+						scope:actor = { can_marry_character = prev }
+					}
+					save_scope_as = sd_pact_spouse
+				}
+			}
+			if = {
+				limit = { exists = scope:sd_pact_spouse }
+				scope:actor = {
+					marry = scope:sd_pact_spouse
+				}
+			}
+		}
+	}
+	# Alliance + lasting pact regardless of marriage success
+	scope:actor = {
+		if = {
+			limit = { NOT = { is_allied_to = scope:recipient } }
+			create_alliance = {
+				target = scope:recipient
+				allied_through_owner = scope:actor
+				allied_through_target = scope:recipient
+			}
+		}
+		sd_bind_ally_client_effect = yes
+		sd_apply_marriage_pact_cd_effect = yes
+		add_character_modifier = {
+			modifier = sd_marriage_pact_modifier
+			years = 25
+		}
+		trigger_event = sd_events.2301
+	}
+	scope:recipient = {
+		add_character_modifier = {
+			modifier = sd_marriage_pact_modifier
+			years = 25
+		}
+		add_opinion = {
+			target = scope:actor
+			modifier = sd_marriage_pact_opinion
+		}
+	}
+}
+
+### 5 — Supreme Sway (charm)
+sd_supreme_sway_effect = {
+	# expects scope:actor / scope:recipient
+	scope:recipient = {
+		add_character_modifier = {
+			modifier = sd_charmed_court_modifier
+			days = sd_sway_duration_days_value
+		}
+		add_opinion = {
+			target = scope:actor
+			modifier = sd_charmed_by_diplomat_opinion
+		}
+		# Short court splash — charm courtiers lightly (O(court), not world)
+		every_courtier = {
+			limit = {
+				is_alive = yes
+				is_adult = yes
+				NOT = { this = scope:recipient }
+			}
+			add_opinion = {
+				target = scope:actor
+				modifier = sd_charmed_by_diplomat_opinion
+			}
+		}
+	}
+	scope:actor = {
+		sd_apply_sway_cd_effect = yes
+		trigger_event = sd_events.2401
+	}
+}
+
+sd_mass_sway_bound_effect = {
+	# this = diplomat
+	every_in_list = {
+		variable = sd_bound_vassals
+		limit = { is_alive = yes }
+		add_character_modifier = {
+			modifier = sd_charmed_court_modifier
+			days = 365
+		}
+		add_opinion = {
+			target = prev
+			modifier = sd_charmed_by_diplomat_opinion
+		}
+	}
+	every_in_list = {
+		variable = sd_bound_tributaries
+		limit = { is_alive = yes }
+		add_character_modifier = {
+			modifier = sd_charmed_court_modifier
+			days = 365
+		}
+		add_opinion = {
+			target = prev
+			modifier = sd_charmed_by_diplomat_opinion
+		}
+	}
+	every_in_list = {
+		variable = sd_bound_allies
+		limit = { is_alive = yes }
+		add_character_modifier = {
+			modifier = sd_charmed_court_modifier
+			days = 365
+		}
+		add_opinion = {
+			target = prev
+			modifier = sd_charmed_by_diplomat_opinion
+		}
+	}
+}
+
+### 7 — Peaceful Realm Invite
+sd_invite_realm_effect = {
+	# expects scope:actor / scope:recipient (independent top liege of small realm)
+	# Gold/prestige charged via interaction cost = {}
+	create_title_and_vassal_change = {
+		type = swear_fealty
+		save_scope_as = sd_realm_invite_change
+		add_claim_on_loss = no
+	}
+	scope:recipient = {
+		change_liege = {
+			liege = scope:actor
+			change = scope:sd_realm_invite_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:sd_realm_invite_change
+	scope:recipient = {
+		add_opinion = {
+			target = scope:actor
+			modifier = sd_realm_invite_opinion
+		}
+	}
+	scope:actor = {
+		sd_bind_vassal_client_effect = yes
+		sd_apply_realm_invite_cd_effect = yes
+		trigger_event = sd_events.2501
+	}
+}
+
+### 9 — Summit pulse
+sd_summit_yearly_pulse = {
+	# root = playable
+	if = {
+		limit = {
+			sd_is_supreme_diplomat = yes
+			sd_module_summit_on = yes
+			NOT = { has_character_flag = sd_summit_pulse_cd }
+		}
+		add_character_flag = {
+			flag = sd_summit_pulse_cd
+			days = 360
+		}
+		trigger_event = sd_summit.1001
+	}
+}
+
+### Death / succession hygiene for tributaries
+sd_on_death_cleanup_effect = {
+	# root = dead character
+	if = {
+		limit = { has_trait = sd_supreme_diplomat }
+		sd_clear_diplomat_modifiers_effect = yes
+	}
+	# If dead was a tributary, clear bond
+	if = {
+		limit = { exists = var:sd_tributary_overlord }
+		sd_clear_tributary_effect = yes
+	}
+	# If dead was overlord, rebind tributaries to player heir with trait, else clear
+	if = {
+		limit = {
+			exists = player_heir
+			player_heir = {
+				is_alive = yes
+				has_trait = sd_supreme_diplomat
+			}
+			any_in_list = {
+				variable = sd_bound_tributaries
+				is_alive = yes
+			}
+		}
+		player_heir = { save_scope_as = sd_heir }
+		every_in_list = {
+			variable = sd_bound_tributaries
+			limit = { is_alive = yes }
+			set_variable = {
+				name = sd_tributary_overlord
+				value = scope:sd_heir
+			}
+			scope:sd_heir = {
+				add_to_variable_list = {
+					name = sd_bound_tributaries
+					target = prev
+				}
+				change_variable = { name = sd_bound_client_count add = 1 }
+			}
+		}
+		scope:sd_heir = {
+			sd_ensure_diplomat_defaults_effect = yes
+			sd_refresh_federation_faucet_effect = yes
+			add_character_modifier = {
+				modifier = sd_tributary_overlord_modifier
+				days = -1
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_in_list = {
+				variable = sd_bound_tributaries
+				is_alive = yes
+			}
+		}
+		every_in_list = {
+			variable = sd_bound_tributaries
+			limit = { is_alive = yes }
+			remove_character_modifier = sd_tributary_client_modifier
+			remove_variable = sd_tributary_overlord
+		}
+	}
+}

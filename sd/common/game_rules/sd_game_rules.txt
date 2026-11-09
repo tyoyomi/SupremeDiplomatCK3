@@ -1,0 +1,101 @@
+sd_rule_intensity_default = {
+	categories = {
+		tweaks
+	}
+
+	default = sd_rule_intensity_default_high
+
+	sd_rule_intensity_default_low = {
+	}
+
+	sd_rule_intensity_default_mid = {
+	}
+
+	sd_rule_intensity_default_high = {
+		flag = blocks_achievements
+	}
+}
+
+sd_rule_granting = {
+	categories = {
+		tweaks
+		ai
+	}
+
+	default = sd_rule_granting_player_self
+
+	sd_rule_granting_player_self = {
+	}
+
+	sd_rule_granting_player_and_targets = {
+		flag = blocks_achievements
+	}
+
+	sd_rule_granting_disabled = {
+	}
+}
+
+sd_rule_ai = {
+	categories = {
+		tweaks
+		ai
+	}
+
+	default = sd_rule_ai_disabled
+
+	sd_rule_ai_disabled = {
+	}
+
+	sd_rule_ai_follow_intensity = {
+		flag = blocks_achievements
+	}
+}
+
+sd_rule_module_vassalage = {
+	categories = { tweaks }
+	default = sd_rule_module_vassalage_on
+	sd_rule_module_vassalage_on = { flag = blocks_achievements }
+	sd_rule_module_vassalage_off = {}
+}
+
+sd_rule_module_tributary = {
+	categories = { tweaks }
+	default = sd_rule_module_tributary_on
+	sd_rule_module_tributary_on = { flag = blocks_achievements }
+	sd_rule_module_tributary_off = {}
+}
+
+sd_rule_module_alliance = {
+	categories = { tweaks }
+	default = sd_rule_module_alliance_on
+	sd_rule_module_alliance_on = { flag = blocks_achievements }
+	sd_rule_module_alliance_off = {}
+}
+
+sd_rule_module_marriage = {
+	categories = { tweaks }
+	default = sd_rule_module_marriage_on
+	sd_rule_module_marriage_on = { flag = blocks_achievements }
+	sd_rule_module_marriage_off = {}
+}
+
+sd_rule_module_sway = {
+	categories = { tweaks }
+	default = sd_rule_module_sway_on
+	sd_rule_module_sway_on = { flag = blocks_achievements }
+	sd_rule_module_sway_off = {}
+}
+
+sd_rule_module_realm_invite = {
+	categories = { tweaks }
+	default = sd_rule_module_realm_invite_on
+	sd_rule_module_realm_invite_on = { flag = blocks_achievements }
+	sd_rule_module_realm_invite_off = {}
+}
+
+sd_rule_module_summit = {
+	categories = { tweaks }
+	default = sd_rule_module_summit_on
+	sd_rule_module_summit_on = { flag = blocks_achievements }
+	sd_rule_module_summit_off = {}
+}

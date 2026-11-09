@@ -1,0 +1,97 @@
+sd_embrace_supreme_diplomat_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	decision_group_type = major
+	desc = sd_embrace_supreme_diplomat_decision_desc
+	selection_tooltip = sd_embrace_supreme_diplomat_decision_tooltip
+	confirm_text = sd_embrace_supreme_diplomat_decision_confirm
+
+	ai_check_interval = 0
+
+	is_shown = {
+		is_alive = yes
+		is_ai = no
+		NOT = { has_game_rule = sd_rule_granting_disabled }
+		NOT = { has_trait = sd_supreme_diplomat }
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = sd_tt_can_embrace
+			sd_can_embrace_diplomat = yes
+		}
+	}
+
+	effect = {
+		custom_tooltip = sd_embrace_supreme_diplomat_decision_effect_tt
+		sd_embrace_supreme_diplomat_effect = yes
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+sd_renounce_supreme_diplomat_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	decision_group_type = major
+	desc = sd_renounce_supreme_diplomat_decision_desc
+	selection_tooltip = sd_renounce_supreme_diplomat_decision_tooltip
+	confirm_text = sd_renounce_supreme_diplomat_decision_confirm
+
+	ai_check_interval = 0
+
+	is_shown = {
+		is_alive = yes
+		is_ai = no
+		has_trait = sd_supreme_diplomat
+	}
+
+	is_valid = {
+		has_trait = sd_supreme_diplomat
+	}
+
+	effect = {
+		custom_tooltip = sd_renounce_supreme_diplomat_decision_effect_tt
+		sd_renounce_supreme_diplomat_effect = yes
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+sd_manage_supreme_diplomat_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	decision_group_type = major
+	desc = sd_manage_supreme_diplomat_decision_desc
+	selection_tooltip = sd_manage_supreme_diplomat_decision_tooltip
+	confirm_text = sd_manage_supreme_diplomat_decision_confirm
+
+	ai_check_interval = 0
+
+	is_shown = {
+		is_alive = yes
+		NOT = { has_game_rule = sd_rule_granting_disabled }
+		OR = {
+			is_ai = no
+			has_game_rule = sd_rule_ai_follow_intensity
+		}
+	}
+
+	is_valid = {
+		always = yes
+	}
+
+	effect = {
+		custom_tooltip = sd_manage_supreme_diplomat_decision_effect_tt
+		sd_ensure_diplomat_defaults_effect = yes
+		trigger_event = sd_settings.1001
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
