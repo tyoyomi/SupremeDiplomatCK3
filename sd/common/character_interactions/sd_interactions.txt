@@ -1,0 +1,552 @@
+### Grant / revoke (when rule allows targets)
+sd_grant_supreme_diplomat_interaction = {
+	category = interaction_category_friendly
+	icon = diplomacy
+	interface_priority = 58
+	common_interaction = yes
+
+	desc = sd_grant_supreme_diplomat_interaction_desc
+	auto_accept = yes
+
+	is_shown = {
+		has_game_rule = sd_rule_granting_player_and_targets
+		scope:actor = {
+			is_alive = yes
+			sd_actor_may_bestow_by_rule = yes
+		}
+		scope:recipient = {
+			is_alive = yes
+			is_adult = yes
+			NOT = { has_trait = sd_supreme_diplomat }
+			OR = {
+				is_child_of = scope:actor
+				is_grandchild_of = scope:actor
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			custom_tooltip = {
+				text = sd_tt_can_receive_diplomat
+				is_adult = yes
+				NOT = { has_trait = sd_supreme_diplomat }
+			}
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			sd_embrace_supreme_diplomat_effect = yes
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+sd_revoke_supreme_diplomat_interaction = {
+	category = interaction_category_hostile
+	icon = diplomacy
+	interface_priority = 57
+	common_interaction = yes
+
+	desc = sd_revoke_supreme_diplomat_interaction_desc
+	auto_accept = yes
+
+	is_shown = {
+		has_game_rule = sd_rule_granting_player_and_targets
+		scope:actor = {
+			is_alive = yes
+			sd_actor_may_bestow_by_rule = yes
+		}
+		scope:recipient = {
+			is_alive = yes
+			has_trait = sd_supreme_diplomat
+			OR = {
+				is_child_of = scope:actor
+				is_grandchild_of = scope:actor
+				this = scope:actor
+			}
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			sd_renounce_supreme_diplomat_effect = yes
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+### 1 — Offer Vassalage
+sd_offer_vassalage_interaction = {
+	category = interaction_category_diplomacy
+	icon = icon_vassal
+	interface_priority = 90
+	common_interaction = yes
+
+	desc = sd_offer_vassalage_interaction_desc
+
+	auto_accept = {
+		custom_description = {
+			text = sd_tt_high_auto_accept
+			subject = scope:actor
+			object = scope:recipient
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	is_shown = {
+		sd_can_offer_vassalage = yes
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = sd_tt_can_offer_vassalage
+				sd_is_supreme_diplomat = yes
+				sd_module_vassalage_on = yes
+				NOT = { has_character_flag = sd_vassalage_cd }
+				gold >= sd_vassalize_gold_cost_value
+			}
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = sd_tt_independent_valid
+				sd_is_independent_valid_target = yes
+			}
+		}
+	}
+
+	cost = {
+		gold = {
+			value = sd_vassalize_gold_cost_value
+		}
+		prestige = {
+			value = sd_vassalize_prestige_cost_value
+		}
+	}
+
+	on_accept = {
+		sd_offer_vassalage_effect = yes
+	}
+
+	ai_accept = {
+		base = 20
+		modifier = {
+			add = 40
+			scope:actor = { sd_intensity_is_mid = yes }
+		}
+		modifier = {
+			add = 1000
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+		modifier = {
+			add = 30
+			opinion = {
+				target = scope:actor
+				value >= 50
+			}
+		}
+		modifier = {
+			add = -40
+			scope:actor.primary_title.tier = scope:recipient.primary_title.tier
+			scope:actor = { sd_intensity_is_low = yes }
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+### 2 — Demand / Offer Tributary
+sd_demand_tributary_interaction = {
+	category = interaction_category_diplomacy
+	icon = icon_gold
+	interface_priority = 89
+	common_interaction = yes
+
+	desc = sd_demand_tributary_interaction_desc
+
+	auto_accept = {
+		custom_description = {
+			text = sd_tt_high_auto_accept
+			subject = scope:actor
+			object = scope:recipient
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	is_shown = {
+		sd_can_demand_tributary = yes
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = sd_tt_can_demand_tributary
+				sd_is_supreme_diplomat = yes
+				sd_module_tributary_on = yes
+				NOT = { has_character_flag = sd_tributary_cd }
+			}
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = sd_tt_independent_valid
+				sd_is_independent_valid_target = yes
+				NOT = { exists = var:sd_tributary_overlord }
+			}
+		}
+	}
+
+	on_accept = {
+		sd_apply_tributary_effect = yes
+	}
+
+	ai_accept = {
+		base = 10
+		modifier = {
+			add = 35
+			scope:actor = { sd_intensity_is_mid = yes }
+		}
+		modifier = {
+			add = 1000
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+		modifier = {
+			add = 25
+			opinion = {
+				target = scope:actor
+				value >= 40
+			}
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+sd_offer_tributary_interaction = {
+	category = interaction_category_diplomacy
+	icon = icon_gold
+	interface_priority = 88
+	common_interaction = yes
+
+	desc = sd_offer_tributary_interaction_desc
+
+	auto_accept = {
+		custom_description = {
+			text = sd_tt_high_auto_accept
+			subject = scope:actor
+			object = scope:recipient
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	is_shown = {
+		sd_can_demand_tributary = yes
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = sd_tt_can_demand_tributary
+				sd_is_supreme_diplomat = yes
+				sd_module_tributary_on = yes
+				NOT = { has_character_flag = sd_tributary_cd }
+			}
+		}
+	}
+
+	on_accept = {
+		sd_apply_tributary_effect = yes
+	}
+
+	ai_accept = {
+		base = 40
+		modifier = {
+			add = 30
+			scope:actor = { sd_intensity_is_mid = yes }
+		}
+		modifier = {
+			add = 1000
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+sd_release_tributary_interaction = {
+	category = interaction_category_diplomacy
+	icon = icon_gold
+	interface_priority = 70
+	common_interaction = yes
+
+	desc = sd_release_tributary_interaction_desc
+	auto_accept = yes
+
+	is_shown = {
+		scope:actor = {
+			sd_is_supreme_diplomat = yes
+			sd_module_tributary_on = yes
+		}
+		scope:recipient = {
+			is_alive = yes
+			exists = var:sd_tributary_overlord
+			var:sd_tributary_overlord = scope:actor
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			sd_clear_tributary_effect = yes
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+### 3 — Grand Alliance Seal + house seal
+sd_seal_alliance_interaction = {
+	category = interaction_category_diplomacy
+	icon = alliance
+	interface_priority = 87
+	common_interaction = yes
+
+	desc = sd_seal_alliance_interaction_desc
+
+	auto_accept = {
+		custom_description = {
+			text = sd_tt_high_auto_accept
+			subject = scope:actor
+			object = scope:recipient
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	is_shown = {
+		sd_can_seal_alliance = yes
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = sd_tt_can_seal_alliance
+				sd_is_supreme_diplomat = yes
+				sd_module_alliance_on = yes
+				NOT = { has_character_flag = sd_alliance_cd }
+			}
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = sd_tt_not_already_allied
+				NOT = { is_allied_to = scope:actor }
+			}
+		}
+	}
+
+	on_accept = {
+		sd_seal_alliance_effect = yes
+	}
+
+	ai_accept = {
+		base = 25
+		modifier = {
+			add = 40
+			scope:actor = { sd_intensity_is_mid = yes }
+		}
+		modifier = {
+			add = 1000
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+sd_seal_house_alliances_interaction = {
+	category = interaction_category_diplomacy
+	icon = alliance
+	interface_priority = 86
+	common_interaction = yes
+
+	desc = sd_seal_house_alliances_interaction_desc
+	auto_accept = yes
+
+	is_shown = {
+		# Self-targeted pack verb — shown when actor is house head diplomat
+		scope:actor = scope:recipient
+		sd_can_seal_house_alliances = yes
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = sd_tt_can_seal_house_alliances
+				sd_is_supreme_diplomat = yes
+				is_house_head = yes
+				sd_module_alliance_on = yes
+				NOT = { has_character_flag = sd_house_alliance_cd }
+			}
+		}
+	}
+
+	on_accept = {
+		sd_seal_house_alliances_effect = yes
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+### 4 — Marriage Pact Express
+sd_marriage_pact_interaction = {
+	category = interaction_category_diplomacy
+	icon = marriage
+	interface_priority = 85
+	common_interaction = yes
+
+	desc = sd_marriage_pact_interaction_desc
+
+	auto_accept = {
+		custom_description = {
+			text = sd_tt_high_auto_accept
+			subject = scope:actor
+			object = scope:recipient
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	is_shown = {
+		sd_can_marriage_pact = yes
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = sd_tt_can_marriage_pact
+				sd_is_supreme_diplomat = yes
+				sd_module_marriage_on = yes
+				NOT = { has_character_flag = sd_marriage_pact_cd }
+			}
+		}
+	}
+
+	on_accept = {
+		sd_marriage_pact_effect = yes
+	}
+
+	ai_accept = {
+		base = 30
+		modifier = {
+			add = 40
+			scope:actor = { sd_intensity_is_mid = yes }
+		}
+		modifier = {
+			add = 1000
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+### 5 — Supreme Sway
+sd_supreme_sway_interaction = {
+	category = interaction_category_friendly
+	icon = diplomacy
+	interface_priority = 84
+	common_interaction = yes
+
+	desc = sd_supreme_sway_interaction_desc
+	auto_accept = yes
+
+	is_shown = {
+		sd_can_supreme_sway = yes
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = sd_tt_can_supreme_sway
+				sd_is_supreme_diplomat = yes
+				sd_module_sway_on = yes
+				NOT = { has_character_flag = sd_sway_cd }
+			}
+		}
+	}
+
+	on_accept = {
+		sd_supreme_sway_effect = yes
+	}
+
+	ai_will_do = { base = 0 }
+}
+
+### 7 — Peaceful Realm Invite
+sd_invite_realm_interaction = {
+	category = interaction_category_diplomacy
+	icon = icon_vassal
+	interface_priority = 91
+	common_interaction = yes
+
+	desc = sd_invite_realm_interaction_desc
+
+	auto_accept = {
+		custom_description = {
+			text = sd_tt_high_auto_accept
+			subject = scope:actor
+			object = scope:recipient
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	is_shown = {
+		sd_can_invite_realm = yes
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = sd_tt_can_invite_realm
+				sd_is_supreme_diplomat = yes
+				sd_module_realm_invite_on = yes
+				NOT = { sd_intensity_is_low = yes }
+				NOT = { has_character_flag = sd_realm_invite_cd }
+				gold >= sd_realm_invite_gold_cost_value
+			}
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = sd_tt_small_independent_realm
+				sd_is_independent_valid_target = yes
+			}
+		}
+	}
+
+	cost = {
+		gold = {
+			value = sd_realm_invite_gold_cost_value
+		}
+		prestige = {
+			value = sd_realm_invite_prestige_cost_value
+		}
+	}
+
+	on_accept = {
+		sd_invite_realm_effect = yes
+	}
+
+	ai_accept = {
+		base = 0
+		modifier = {
+			add = 25
+			scope:actor = { sd_intensity_is_mid = yes }
+		}
+		modifier = {
+			add = 1000
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}

@@ -1,0 +1,28 @@
+# Supreme Diplomat — append-only hooks
+
+on_death = {
+	on_actions = { sd_on_death }
+}
+
+sd_on_death = {
+	effect = {
+		sd_on_death_cleanup_effect = yes
+	}
+}
+
+yearly_playable_pulse = {
+	on_actions = {
+		sd_yearly_playable_pulse
+	}
+}
+
+sd_yearly_playable_pulse = {
+	trigger = {
+		is_alive = yes
+		has_trait = sd_supreme_diplomat
+	}
+	effect = {
+		sd_tributary_yearly_pulse = yes
+		sd_summit_yearly_pulse = yes
+	}
+}

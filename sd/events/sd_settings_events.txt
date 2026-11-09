@@ -1,0 +1,290 @@
+namespace = sd_settings
+
+# Manage Supreme Diplomat — page 1 (Done first; SS overflow craft)
+sd_settings.1001 = {
+	type = character_event
+	title = sd_settings.1001.t
+	theme = diplomacy
+
+	desc = {
+		desc = sd_settings.1001.desc_intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:sd_cfg_intensity = 1 }
+				desc = sd_settings.tier.intensity_1
+			}
+			triggered_desc = {
+				trigger = { var:sd_cfg_intensity = 2 }
+				desc = sd_settings.tier.intensity_2
+			}
+			triggered_desc = {
+				trigger = { var:sd_cfg_intensity = 3 }
+				desc = sd_settings.tier.intensity_3
+			}
+			desc = sd_settings.tier.intensity_3
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:sd_cfg_module_vassalage = 1 }
+				desc = sd_settings.module.vassalage_on
+			}
+			desc = sd_settings.module.vassalage_off
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:sd_cfg_module_tributary = 1 }
+				desc = sd_settings.module.tributary_on
+			}
+			desc = sd_settings.module.tributary_off
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:sd_cfg_module_alliance = 1 }
+				desc = sd_settings.module.alliance_on
+			}
+			desc = sd_settings.module.alliance_off
+		}
+		desc = sd_settings.1001.desc_federation
+		desc = sd_settings.1001.desc_footer
+	}
+
+	immediate = {
+		sd_ensure_diplomat_defaults_effect = yes
+	}
+
+	option = {
+		name = sd_settings.1001.close
+		custom_tooltip = sd_settings.tt.close
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:sd_cfg_intensity = 1 }
+						desc = sd_settings.opt.intensity_1
+					}
+					triggered_desc = {
+						trigger = { var:sd_cfg_intensity = 2 }
+						desc = sd_settings.opt.intensity_2
+					}
+					triggered_desc = {
+						trigger = { var:sd_cfg_intensity = 3 }
+						desc = sd_settings.opt.intensity_3
+					}
+					desc = sd_settings.opt.intensity_3
+				}
+			}
+		}
+		custom_tooltip = sd_settings.tt.intensity
+		sd_cycle_intensity_cfg_effect = yes
+		trigger_event = sd_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:sd_cfg_module_vassalage = 1 }
+						desc = sd_settings.opt.vassalage_on
+					}
+					desc = sd_settings.opt.vassalage_off
+				}
+			}
+		}
+		custom_tooltip = sd_settings.tt.vassalage
+		sd_cycle_module_vassalage_cfg_effect = yes
+		trigger_event = sd_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:sd_cfg_module_tributary = 1 }
+						desc = sd_settings.opt.tributary_on
+					}
+					desc = sd_settings.opt.tributary_off
+				}
+			}
+		}
+		custom_tooltip = sd_settings.tt.tributary
+		sd_cycle_module_tributary_cfg_effect = yes
+		trigger_event = sd_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:sd_cfg_module_alliance = 1 }
+						desc = sd_settings.opt.alliance_on
+					}
+					desc = sd_settings.opt.alliance_off
+				}
+			}
+		}
+		custom_tooltip = sd_settings.tt.alliance
+		sd_cycle_module_alliance_cfg_effect = yes
+		trigger_event = sd_settings.1001
+	}
+
+	option = {
+		name = sd_settings.1001.more
+		custom_tooltip = sd_settings.tt.more
+		trigger_event = sd_settings.1002
+	}
+}
+
+# Page 2 — remaining modules + federation actions
+sd_settings.1002 = {
+	type = character_event
+	title = sd_settings.1002.t
+	theme = diplomacy
+
+	desc = {
+		desc = sd_settings.1002.desc_intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:sd_cfg_module_marriage = 1 }
+				desc = sd_settings.module.marriage_on
+			}
+			desc = sd_settings.module.marriage_off
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:sd_cfg_module_sway = 1 }
+				desc = sd_settings.module.sway_on
+			}
+			desc = sd_settings.module.sway_off
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:sd_cfg_module_realm_invite = 1 }
+				desc = sd_settings.module.realm_invite_on
+			}
+			desc = sd_settings.module.realm_invite_off
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:sd_cfg_module_summit = 1 }
+				desc = sd_settings.module.summit_on
+			}
+			desc = sd_settings.module.summit_off
+		}
+		desc = sd_settings.1001.desc_federation
+		desc = sd_settings.1002.desc_footer
+	}
+
+	immediate = {
+		sd_ensure_diplomat_defaults_effect = yes
+	}
+
+	option = {
+		name = sd_settings.1001.close
+		custom_tooltip = sd_settings.tt.close
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:sd_cfg_module_marriage = 1 }
+						desc = sd_settings.opt.marriage_on
+					}
+					desc = sd_settings.opt.marriage_off
+				}
+			}
+		}
+		custom_tooltip = sd_settings.tt.marriage
+		sd_cycle_module_marriage_cfg_effect = yes
+		trigger_event = sd_settings.1002
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:sd_cfg_module_sway = 1 }
+						desc = sd_settings.opt.sway_on
+					}
+					desc = sd_settings.opt.sway_off
+				}
+			}
+		}
+		custom_tooltip = sd_settings.tt.sway
+		sd_cycle_module_sway_cfg_effect = yes
+		trigger_event = sd_settings.1002
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:sd_cfg_module_realm_invite = 1 }
+						desc = sd_settings.opt.realm_invite_on
+					}
+					desc = sd_settings.opt.realm_invite_off
+				}
+			}
+		}
+		custom_tooltip = sd_settings.tt.realm_invite
+		sd_cycle_module_realm_invite_cfg_effect = yes
+		trigger_event = sd_settings.1002
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:sd_cfg_module_summit = 1 }
+						desc = sd_settings.opt.summit_on
+					}
+					desc = sd_settings.opt.summit_off
+				}
+			}
+		}
+		custom_tooltip = sd_settings.tt.summit
+		sd_cycle_module_summit_cfg_effect = yes
+		trigger_event = sd_settings.1002
+	}
+
+	option = {
+		name = sd_settings.1001.mass_sway
+		custom_tooltip = sd_settings.tt.mass_sway
+		trigger = {
+			has_trait = sd_supreme_diplomat
+			sd_module_sway_on = yes
+			sd_actor_has_any_bound_client = yes
+		}
+		sd_mass_sway_bound_effect = yes
+		trigger_event = sd_settings.1002
+	}
+
+	option = {
+		name = sd_settings.1001.house_seal
+		custom_tooltip = sd_settings.tt.house_seal
+		trigger = {
+			has_trait = sd_supreme_diplomat
+			sd_module_alliance_on = yes
+			is_house_head = yes
+			NOT = { has_character_flag = sd_house_alliance_cd }
+		}
+		save_scope_as = actor
+		sd_seal_house_alliances_effect = yes
+	}
+
+	option = {
+		name = sd_settings.1001.back
+		custom_tooltip = sd_settings.tt.back
+		trigger_event = sd_settings.1001
+	}
+}

@@ -1,0 +1,62 @@
+# Supreme Diplomat — intensity personal sheet + client/charm modifiers
+
+@sd_diplo_low = 5
+@sd_diplo_med = 10
+@sd_diplo_high = 15
+@sd_prestige_low = 0.1
+@sd_prestige_med = 0.25
+@sd_prestige_high = 0.5
+
+sd_diplo_low_modifier = {
+	diplomacy = @sd_diplo_low
+	monthly_prestige = @sd_prestige_low
+}
+
+sd_diplo_med_modifier = {
+	diplomacy = @sd_diplo_med
+	monthly_prestige = @sd_prestige_med
+}
+
+sd_diplo_high_modifier = {
+	diplomacy = @sd_diplo_high
+	monthly_prestige = @sd_prestige_high
+}
+
+# Mild federation faucet while ≥1 bound client and intensity ≥ Mid (applied separately)
+@sd_faucet_prestige = 0.15
+
+sd_federation_prestige_faucet_modifier = {
+	monthly_prestige = @sd_faucet_prestige
+}
+
+# Charm — so vanilla asks stick (not intimidation)
+sd_charmed_court_modifier = {
+	icon = sd_charmed_court_modifier
+	diplomacy = 5
+	general_opinion = 25
+	monthly_prestige = 0.1
+}
+
+# Tributary client — stay independent; soft war hesitation via opinion/prestige pressure
+sd_tributary_client_modifier = {
+	icon = sd_tributary_client_modifier
+	monthly_prestige = -0.1
+	general_opinion = 5
+}
+
+sd_tributary_overlord_modifier = {
+	monthly_prestige = 0.05
+}
+
+# Marriage pact lasting opinion link (mirrored via opinion modifier too)
+sd_marriage_pact_modifier = {
+	icon = sd_marriage_pact_modifier
+	general_opinion = 15
+	monthly_prestige = 0.05
+}
+
+# Low-intensity defensive pact stand-in (no full create_alliance)
+sd_defensive_pact_modifier = {
+	general_opinion = 20
+	monthly_prestige = 0.05
+}

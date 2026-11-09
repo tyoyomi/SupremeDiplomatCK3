@@ -1,0 +1,151 @@
+namespace = sd_events
+
+# Embrace toast
+sd_events.1001 = {
+	type = character_event
+	title = sd_events.1001.t
+	desc = sd_events.1001.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	option = {
+		name = sd_events.1001.a
+	}
+}
+
+# Renounce toast
+sd_events.1002 = {
+	type = character_event
+	title = sd_events.1002.t
+	desc = sd_events.1002.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = dismissal
+	}
+
+	option = {
+		name = sd_events.1002.a
+	}
+}
+
+# Offer Vassalage success
+sd_events.2001 = {
+	type = character_event
+	title = sd_events.2001.t
+	desc = sd_events.2001.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = scope:recipient
+
+	option = {
+		name = sd_events.2001.a
+	}
+}
+
+# Tributary bound
+sd_events.2101 = {
+	type = character_event
+	title = sd_events.2101.t
+	desc = sd_events.2101.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	right_portrait = scope:recipient
+
+	option = {
+		name = sd_events.2101.a
+	}
+}
+
+# Alliance sealed
+sd_events.2201 = {
+	type = character_event
+	title = sd_events.2201.t
+	desc = sd_events.2201.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = scope:recipient
+
+	option = {
+		name = sd_events.2201.a
+	}
+}
+
+# House alliances pack
+sd_events.2202 = {
+	type = character_event
+	title = sd_events.2202.t
+	desc = sd_events.2202.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	option = {
+		name = sd_events.2202.a
+	}
+}
+
+# Marriage pact
+sd_events.2301 = {
+	type = character_event
+	title = sd_events.2301.t
+	desc = sd_events.2301.desc
+	theme = marriage
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = scope:recipient
+
+	option = {
+		name = sd_events.2301.a
+	}
+}
+
+# Supreme Sway
+sd_events.2401 = {
+	type = character_event
+	title = sd_events.2401.t
+	desc = sd_events.2401.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	right_portrait = scope:recipient
+
+	option = {
+		name = sd_events.2401.a
+	}
+}
+
+# Realm invite
+sd_events.2501 = {
+	type = character_event
+	title = sd_events.2501.t
+	desc = sd_events.2501.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = scope:recipient
+
+	option = {
+		name = sd_events.2501.a
+	}
+}

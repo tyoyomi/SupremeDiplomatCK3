@@ -1,0 +1,23 @@
+@sd_diplomacy = 28
+@sd_other_skill = 12
+@sd_trait_prestige = 0.25
+
+sd_supreme_diplomat = {
+	category = fame
+	random_creation = 0
+	genetic = no
+	immortal = no
+	good = yes
+	shown_in_ruler_designer = yes
+
+	flag = sd_is_supreme_diplomat
+
+	diplomacy = @sd_diplomacy
+	intrigue = @sd_other_skill
+	martial = @sd_other_skill
+	stewardship = @sd_other_skill
+	learning = @sd_other_skill
+	prowess = @sd_other_skill
+
+	monthly_prestige = @sd_trait_prestige
+}

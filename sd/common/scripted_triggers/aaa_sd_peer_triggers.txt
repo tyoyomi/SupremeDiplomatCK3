@@ -1,0 +1,21 @@
+# Soft peer defaults (LIOS). Peers may override later files to always = yes.
+
+sd_ss_loaded_trigger = {
+	always = no
+}
+
+sd_ssc_loaded_trigger = {
+	always = no
+}
+
+sd_ea_loaded_trigger = {
+	always = no
+}
+
+sd_su_loaded_trigger = {
+	always = no
+}
+
+sd_ds_loaded_trigger = {
+	always = no
+}
