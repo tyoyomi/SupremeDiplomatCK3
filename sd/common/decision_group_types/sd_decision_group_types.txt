@@ -1,0 +1,7 @@
+# Supreme Diplomat — custom decision group (additive; does not replace vanilla major)
+
+sd_diplomat = {
+	sort_order = 194
+	gui_tags = { big_button }
+	important_decision_group = yes
+}

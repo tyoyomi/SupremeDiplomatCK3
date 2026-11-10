@@ -2,7 +2,7 @@ sd_embrace_supreme_diplomat_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
 	}
-	decision_group_type = major
+	decision_group_type = sd_diplomat
 	desc = sd_embrace_supreme_diplomat_decision_desc
 	selection_tooltip = sd_embrace_supreme_diplomat_decision_tooltip
 	confirm_text = sd_embrace_supreme_diplomat_decision_confirm
@@ -36,7 +36,7 @@ sd_renounce_supreme_diplomat_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
 	}
-	decision_group_type = major
+	decision_group_type = sd_diplomat
 	desc = sd_renounce_supreme_diplomat_decision_desc
 	selection_tooltip = sd_renounce_supreme_diplomat_decision_tooltip
 	confirm_text = sd_renounce_supreme_diplomat_decision_confirm
@@ -66,7 +66,7 @@ sd_manage_supreme_diplomat_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
 	}
-	decision_group_type = major
+	decision_group_type = sd_diplomat
 	desc = sd_manage_supreme_diplomat_decision_desc
 	selection_tooltip = sd_manage_supreme_diplomat_decision_tooltip
 	confirm_text = sd_manage_supreme_diplomat_decision_confirm

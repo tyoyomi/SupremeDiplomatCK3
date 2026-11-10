@@ -51,6 +51,9 @@
  sd_manage_supreme_diplomat_decision_confirm:0 "Open Hub"
  sd_manage_supreme_diplomat_decision_effect_tt:0 "Opens the Supreme Diplomat manage hub"
 
+ # Decision group
+ decision_group_type_sd_diplomat:0 "Supreme Diplomat"
+
  # Interactions
  sd_grant_supreme_diplomat_interaction:0 "Grant Supreme Diplomat"
  sd_grant_supreme_diplomat_interaction_desc:0 "Bestow the Supreme Diplomat mantle on a child or grandchild. Available when the granting rule allows targets."
