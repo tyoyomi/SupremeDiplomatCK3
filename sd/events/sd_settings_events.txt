@@ -274,7 +274,7 @@ sd_settings.1002 = {
 		custom_tooltip = sd_settings.tt.harmonize_gov
 		trigger = {
 			has_trait = sd_supreme_diplomat
-			sd_actor_gov_is_feudal_or_clan = yes
+			sd_actor_gov_is_adoptable = yes
 			NOT = { has_character_flag = sd_adopt_liege_gov_cd }
 			sd_actor_has_mismatched_realm_gov = yes
 			gold >= sd_adopt_liege_gov_gold_cost_value

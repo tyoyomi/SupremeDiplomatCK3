@@ -482,7 +482,7 @@ sd_supreme_sway_interaction = {
 	ai_will_do = { base = 0 }
 }
 
-### Adopt Liege Government — Feudal↔Clan; realm cascade
+### Adopt Liege Government — any scriptable liege gov; realm cascade
 sd_adopt_liege_government_interaction = {
 	category = interaction_category_diplomacy
 	icon = diplomacy
@@ -509,7 +509,7 @@ sd_adopt_liege_government_interaction = {
 			custom_tooltip = {
 				text = sd_tt_can_adopt_liege_gov
 				sd_is_supreme_diplomat = yes
-				sd_actor_gov_is_feudal_or_clan = yes
+				sd_actor_gov_is_adoptable = yes
 				NOT = { has_character_flag = sd_adopt_liege_gov_cd }
 				gold >= sd_adopt_liege_gov_gold_cost_value
 			}

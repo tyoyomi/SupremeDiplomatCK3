@@ -865,10 +865,49 @@ sd_mass_sway_bound_effect = {
 	}
 }
 
-### Adopt Liege Government (Feudal↔Clan)
-# this = convert target; mirrors top_liege / scope:actor government
+### Adopt Liege Government (any scriptable liege gov)
+# this = convert target; mirrors top_liege / scope:actor government.
+# Admin-family (Admin / Celestial / Meritocratic / Khanate / Ritsuryō): call
+# vanilla change_to_administrative_effect (estates / domicile / flavor pick).
+# Soft peer: do NOT rewrite Demand Admin — only reuse its convert effect.
 sd_change_to_liege_government_effect = {
+	# Admin-mechanic liege → proper admin convert (not bare key swap)
 	if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = scope:actor
+					scope:actor = { government_has_mechanic = administrative }
+				}
+				AND = {
+					NOT = { exists = scope:actor }
+					top_liege = { government_has_mechanic = administrative }
+				}
+			}
+		}
+		if = {
+			limit = { exists = scope:actor }
+			scope:actor = { save_scope_as = new_liege }
+		}
+		change_to_administrative_effect = yes
+	}
+	# Sōryō before generic feudal (japan feudal is distinct)
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = scope:actor
+					scope:actor = { government_has_flag = government_is_japan_feudal }
+				}
+				AND = {
+					NOT = { exists = scope:actor }
+					top_liege = { government_has_flag = government_is_japan_feudal }
+				}
+			}
+		}
+		change_government = japan_feudal_government
+	}
+	else_if = {
 		limit = {
 			OR = {
 				AND = {
@@ -898,6 +937,67 @@ sd_change_to_liege_government_effect = {
 		}
 		change_government = clan_government
 	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = scope:actor
+					scope:actor = { government_has_flag = government_is_tribal }
+				}
+				AND = {
+					NOT = { exists = scope:actor }
+					top_liege = { government_has_flag = government_is_tribal }
+				}
+			}
+		}
+		change_government = tribal_government
+	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = scope:actor
+					scope:actor = { government_has_flag = government_is_nomadic }
+				}
+				AND = {
+					NOT = { exists = scope:actor }
+					top_liege = { government_has_flag = government_is_nomadic }
+				}
+			}
+		}
+		change_government = nomad_government
+	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = scope:actor
+					scope:actor = { government_has_flag = government_is_mandala }
+				}
+				AND = {
+					NOT = { exists = scope:actor }
+					top_liege = { government_has_flag = government_is_mandala }
+				}
+			}
+		}
+		change_government = mandala_government
+	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = scope:actor
+					scope:actor = { government_has_flag = government_is_wanua }
+				}
+				AND = {
+					NOT = { exists = scope:actor }
+					top_liege = { government_has_flag = government_is_wanua }
+				}
+			}
+		}
+		change_government = wanua_government
+	}
+	# Uncovered liege gov: no-op (hard-blocked / unscriptable types never reach here)
 }
 
 sd_convert_one_to_liege_government_effect = {

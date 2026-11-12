@@ -333,12 +333,29 @@ sd_actor_has_any_bound_client = {
 	var:sd_bound_client_count >= 1
 }
 
-# Adopt Liege Government — Feudal↔Clan first (MVP). Actor must be feudal or clan.
-sd_actor_gov_is_feudal_or_clan = {
+# Adopt Liege Government — any scriptable liege gov (admin/feudal/clan/tribal/…).
+# Hard-block unplayable / office / camp governments for actor and recipients.
+sd_gov_is_hard_blocked_for_adopt = {
 	OR = {
-		government_has_flag = government_is_feudal
-		government_has_flag = government_is_clan
+		government_has_flag = government_is_theocracy
+		government_has_flag = government_is_ecclesiastical
+		government_has_flag = government_is_republic
+		government_has_flag = government_is_landless_adventurer
+		government_has_flag = government_is_holy_order
+		government_has_flag = government_is_mercenary
+		government_has_flag = government_is_herder
+		has_government = monastic_holy_order_government
 	}
+}
+
+# Actor may offer Adopt Liege when their government is one we can mirror.
+sd_actor_gov_is_adoptable = {
+	NOT = { sd_gov_is_hard_blocked_for_adopt = yes }
+}
+
+# Keep old name as alias so any leftover refs stay valid
+sd_actor_gov_is_feudal_or_clan = {
+	sd_actor_gov_is_adoptable = yes
 }
 
 # this = potential convert; compare against top_liege (works in hub + iterators
@@ -351,26 +368,10 @@ sd_eligible_for_liege_gov_adopt = {
 	exists = top_liege
 	NOT = { this = top_liege }
 	NOT = { has_same_government = top_liege }
-	NOR = {
-		government_has_flag = government_is_administrative
-		government_has_flag = government_is_theocracy
-		government_has_flag = government_is_ecclesiastical
-		government_has_flag = government_is_republic
-		government_has_flag = government_is_landless_adventurer
-		government_has_flag = government_is_holy_order
-		government_has_flag = government_is_mercenary
-	}
-	# Feudal↔Clan first priority
-	OR = {
-		AND = {
-			government_has_flag = government_is_clan
-			top_liege = { government_has_flag = government_is_feudal }
-		}
-		AND = {
-			government_has_flag = government_is_feudal
-			top_liege = { government_has_flag = government_is_clan }
-		}
-	}
+	NOT = { sd_gov_is_hard_blocked_for_adopt = yes }
+	NOT = { holds_religious_office_trigger = yes }
+	# Liege must have a government we can script a convert toward
+	top_liege = { sd_actor_gov_is_adoptable = yes }
 }
 
 sd_can_adopt_liege_government = {
@@ -378,7 +379,7 @@ sd_can_adopt_liege_government = {
 		sd_is_supreme_diplomat = yes
 		sd_ai_may_use_diplomat = yes
 		is_landed = yes
-		sd_actor_gov_is_feudal_or_clan = yes
+		sd_actor_gov_is_adoptable = yes
 		NOT = { has_character_flag = sd_adopt_liege_gov_cd }
 	}
 	scope:recipient = {
