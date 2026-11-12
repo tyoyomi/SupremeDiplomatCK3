@@ -149,3 +149,20 @@ sd_events.2501 = {
 		name = sd_events.2501.a
 	}
 }
+
+# Adopt Liege Government / realm harmonize
+sd_events.2601 = {
+	type = character_event
+	title = sd_events.2601.t
+	desc = sd_events.2601.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	right_portrait = scope:recipient
+
+	option = {
+		name = sd_events.2601.a
+	}
+}

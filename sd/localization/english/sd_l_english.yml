@@ -31,6 +31,7 @@
  sd_charmed_by_diplomat_opinion:0 "Charmed"
  sd_realm_invite_opinion:0 "Realm Invite"
  sd_summit_guest_opinion:0 "Summit Guest"
+ sd_adopted_liege_gov_opinion:0 "Adopted Liege Government"
 
  # Decisions
  sd_embrace_supreme_diplomat_decision:0 "Embrace Supreme Diplomat"
@@ -89,6 +90,10 @@
  sd_invite_realm_interaction:0 "Invite Realm"
  sd_invite_realm_interaction_desc:0 "Peacefully invite a small independent realm's top liege under you while keeping their vassal tree. Stricter size and cost than Offer Vassalage. Hidden at Low. High auto-accept. No war, no Realm Annex CB."
 
+ sd_adopt_liege_government_interaction:0 "Adopt Liege Government"
+ sd_adopt_liege_government_interaction_desc:0 "Convince [recipient.GetShortUIName] to adopt your government — Feudal and Clan first. Gold sweetener; Mid uses soft acceptance, High auto-accepts. On accept, cascades to anyone in your realm who still mismatches (vassals and below only — no world scan). Soft peer: not Demand Administrative, not hooks, not holding feudalize."
+ sd_adopt_liege_government_interaction_extra_icon:0 "$sd_adopt_liege_government_interaction$"
+
  # Tooltips
  sd_tt_can_embrace:0 "You may embrace Supreme Diplomat"
  sd_tt_can_receive_diplomat:0 "They may receive Supreme Diplomat"
@@ -103,6 +108,8 @@
  sd_tt_can_supreme_sway:0 "You are a Supreme Diplomat with Sway On and off cooldown"
  sd_tt_can_invite_realm:0 "You are a Supreme Diplomat with Realm Invite On at Mid/High, off cooldown, and can afford the cost"
  sd_tt_small_independent_realm:0 "Independent top liege of a small realm within the intensity size cap"
+ sd_tt_can_adopt_liege_gov:0 "You are a Supreme Diplomat on Feudal or Clan, off cooldown, and can afford the gold sweetener"
+ sd_tt_mismatched_realm_vassal:0 "Landed AI vassal in your realm whose government mismatches yours (Feudal↔Clan)"
 
  # Game rules
  rule_sd_rule_intensity_default:0 "Supreme Diplomat: Default Intensity"
@@ -178,6 +185,7 @@
  sd_settings.1001.more:0 "More…"
  sd_settings.1001.back:0 "Back"
  sd_settings.1001.mass_sway:0 "Mass Sway Bound Clients"
+ sd_settings.1001.harmonize_gov:0 "Harmonize Realm Governments"
  sd_settings.1001.house_seal:0 "Seal House Alliances"
 
  sd_settings.1002.t:0 "Supreme Diplomat — Modules"
@@ -229,6 +237,7 @@
  sd_settings.tt.realm_invite:0 "Toggle Realm Invite module"
  sd_settings.tt.summit:0 "Toggle yearly Summit pulse"
  sd_settings.tt.mass_sway:0 "Apply short Charmed Court to all bound clients (O(bound))"
+ sd_settings.tt.harmonize_gov:0 "Pay gold to make every mismatched Feudal/Clan vassal in your realm adopt your government (O(vassals_or_below))"
  sd_settings.tt.house_seal:0 "Pack-seal alliances up to intensity cap"
  sd_settings.tt.close:0 "Close the hub"
  sd_settings.tt.more:0 "More modules and federation actions"
@@ -270,6 +279,10 @@
  sd_events.2501.t:0 "Realm Invited"
  sd_events.2501.desc:0 "[recipient.GetShortUIName] brings their realm under your liege — vassal tree intact, no siege."
  sd_events.2501.a:0 "Join the empire."
+
+ sd_events.2601.t:0 "Government Harmonized"
+ sd_events.2601.desc:0 "Mismatched vassals in your realm adopt your government. Contracts should start making sense again — Feudal and Clan speaking the same language."
+ sd_events.2601.a:0 "One realm, one way."
 
  # Summit
  sd_summit.1001.t:0 "Court of Nations"

@@ -381,6 +381,20 @@ sd_apply_realm_invite_cd_effect = {
 	}
 }
 
+sd_apply_adopt_liege_gov_cd_effect = {
+	if = {
+		limit = { sd_intensity_is_low = yes }
+		add_character_flag = { flag = sd_adopt_liege_gov_cd years = 1 }
+	}
+	else_if = {
+		limit = { sd_intensity_is_mid = yes }
+		add_character_flag = { flag = sd_adopt_liege_gov_cd days = 180 }
+	}
+	else = {
+		add_character_flag = { flag = sd_adopt_liege_gov_cd days = 60 }
+	}
+}
+
 ### Grant / revoke
 sd_embrace_supreme_diplomat_silent_effect = {
 	add_trait = sd_supreme_diplomat
@@ -849,6 +863,100 @@ sd_mass_sway_bound_effect = {
 			modifier = sd_charmed_by_diplomat_opinion
 		}
 	}
+}
+
+### Adopt Liege Government (Feudal↔Clan)
+# this = convert target; mirrors top_liege / scope:actor government
+sd_change_to_liege_government_effect = {
+	if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = scope:actor
+					scope:actor = { government_has_flag = government_is_feudal }
+				}
+				AND = {
+					NOT = { exists = scope:actor }
+					top_liege = { government_has_flag = government_is_feudal }
+				}
+			}
+		}
+		change_government = feudal_government
+	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = scope:actor
+					scope:actor = { government_has_flag = government_is_clan }
+				}
+				AND = {
+					NOT = { exists = scope:actor }
+					top_liege = { government_has_flag = government_is_clan }
+				}
+			}
+		}
+		change_government = clan_government
+	}
+}
+
+sd_convert_one_to_liege_government_effect = {
+	# this = convert target
+	sd_change_to_liege_government_effect = yes
+	if = {
+		limit = { exists = scope:actor }
+		add_opinion = {
+			target = scope:actor
+			modifier = sd_adopted_liege_gov_opinion
+		}
+	}
+	else_if = {
+		limit = { exists = top_liege }
+		add_opinion = {
+			target = top_liege
+			modifier = sd_adopted_liege_gov_opinion
+		}
+	}
+}
+
+# Interaction / hub: recipient + cascade anyone in actor realm who mismatches
+sd_adopt_liege_government_effect = {
+	# expects scope:actor (Diplomat) / scope:recipient (primary ask, optional for hub)
+	if = {
+		limit = {
+			exists = scope:recipient
+			scope:recipient = { sd_eligible_for_liege_gov_adopt = yes }
+		}
+		scope:recipient = {
+			sd_convert_one_to_liege_government_effect = yes
+		}
+	}
+	# Cascade: O(vassals_or_below) only — never every_living_character
+	scope:actor = {
+		every_vassal_or_below = {
+			limit = {
+				sd_eligible_for_liege_gov_adopt = yes
+				trigger_if = {
+					limit = { exists = scope:recipient }
+					NOT = { this = scope:recipient }
+				}
+			}
+			sd_convert_one_to_liege_government_effect = yes
+		}
+		sd_apply_adopt_liege_gov_cd_effect = yes
+		trigger_event = sd_events.2601
+	}
+}
+
+# Hub mass harmonize — same cascade, gold paid in option
+sd_harmonize_realm_governments_effect = {
+	# this = Diplomat actor
+	save_scope_as = actor
+	if = {
+		limit = { gold >= sd_adopt_liege_gov_gold_cost_value }
+		remove_short_term_gold = sd_adopt_liege_gov_gold_cost_value
+	}
+	sd_adopt_liege_government_effect = yes
 }
 
 ### 7 — Peaceful Realm Invite

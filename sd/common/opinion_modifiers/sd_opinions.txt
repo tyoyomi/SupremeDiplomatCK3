@@ -32,3 +32,8 @@ sd_summit_guest_opinion = {
 	opinion = 15
 	yearly_decay = 2
 }
+
+sd_adopted_liege_gov_opinion = {
+	opinion = -10
+	yearly_decay = 1
+}
