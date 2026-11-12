@@ -482,6 +482,106 @@ sd_supreme_sway_interaction = {
 	ai_will_do = { base = 0 }
 }
 
+### Adopt Liege Government — Feudal↔Clan; realm cascade
+sd_adopt_liege_government_interaction = {
+	category = interaction_category_diplomacy
+	icon = diplomacy
+	interface_priority = 88
+	common_interaction = yes
+
+	desc = sd_adopt_liege_government_interaction_desc
+
+	auto_accept = {
+		custom_description = {
+			text = sd_tt_high_auto_accept
+			subject = scope:actor
+			object = scope:recipient
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+	}
+
+	is_shown = {
+		sd_can_adopt_liege_government = yes
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = sd_tt_can_adopt_liege_gov
+				sd_is_supreme_diplomat = yes
+				sd_actor_gov_is_feudal_or_clan = yes
+				NOT = { has_character_flag = sd_adopt_liege_gov_cd }
+				gold >= sd_adopt_liege_gov_gold_cost_value
+			}
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = sd_tt_mismatched_realm_vassal
+				top_liege = scope:actor
+				sd_eligible_for_liege_gov_adopt = yes
+			}
+		}
+	}
+
+	cost = {
+		gold = {
+			value = sd_adopt_liege_gov_gold_cost_value
+		}
+	}
+
+	on_accept = {
+		sd_adopt_liege_government_effect = yes
+	}
+
+	ai_accept = {
+		base = 15
+		modifier = {
+			add = 35
+			scope:actor = { sd_intensity_is_mid = yes }
+		}
+		modifier = {
+			add = 1000
+			scope:actor = { sd_intensity_is_high = yes }
+		}
+		modifier = {
+			add = -25
+			scope:actor = { sd_intensity_is_low = yes }
+		}
+		modifier = {
+			add = 25
+			opinion = {
+				target = scope:actor
+				value >= 40
+			}
+		}
+		modifier = {
+			add = 20
+			faith = scope:actor.faith
+		}
+		modifier = {
+			add = 15
+			culture = scope:actor.culture
+		}
+		modifier = {
+			add = 30
+			has_character_modifier = sd_charmed_court_modifier
+		}
+		modifier = {
+			add = -30
+			opinion = {
+				target = scope:actor
+				value < -25
+			}
+		}
+		modifier = {
+			add = -20
+			highest_held_title_tier >= tier_kingdom
+		}
+	}
+
+	ai_will_do = { base = 0 }
+}
+
 ### 7 — Peaceful Realm Invite
 sd_invite_realm_interaction = {
 	category = interaction_category_diplomacy

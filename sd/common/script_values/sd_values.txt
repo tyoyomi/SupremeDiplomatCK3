@@ -125,3 +125,34 @@ sd_sway_duration_days_value = {
 		set = @sd_sway_days_mid
 	}
 }
+
+# Adopt Liege Government — gold sweetener (intensity + recipient tier)
+@sd_adopt_gov_gold_low = 200
+@sd_adopt_gov_gold_mid = 125
+@sd_adopt_gov_gold_high = 75
+@sd_adopt_gov_tier_gold = 25
+@sd_adopt_gov_cascade_gold = 10
+
+sd_adopt_liege_gov_gold_cost_value = {
+	value = @sd_adopt_gov_gold_high
+	if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 1 }
+		set = @sd_adopt_gov_gold_low
+	}
+	else_if = {
+		limit = { exists = var:sd_cfg_intensity var:sd_cfg_intensity = 2 }
+		set = @sd_adopt_gov_gold_mid
+	}
+	if = {
+		limit = { exists = scope:recipient }
+		add = {
+			value = scope:recipient.primary_title.tier
+			multiply = @sd_adopt_gov_tier_gold
+		}
+	}
+	# Realm cascade surcharge — O(vassals_or_below), never living_character
+	every_vassal_or_below = {
+		limit = { sd_eligible_for_liege_gov_adopt = yes }
+		add = @sd_adopt_gov_cascade_gold
+	}
+}
